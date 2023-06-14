@@ -13,10 +13,14 @@ const getUsersById = (req, res) => {
 
   User.findById(id)
     .then((user) => {
+      if (!user) {
+        res.status(404).send({ message: 'Пользователь по указанному _id не найден.' });
+        return;
+      }
       res.status(200).send(user);
     }).catch((err) => {
       if (err.name === 'CastError') {
-        res.status(404).send({ message: 'Пользователь по указанному _id не найден' });
+        res.status(400).send({ message: 'Пользователь по указанному _id не найден' });
         return;
       }
       res.status(500).send(err.message);
@@ -24,9 +28,16 @@ const getUsersById = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  const newUserData = req.body;
+  const { name, about, avatar } = req.body;
+  if (!name || !about || !avatar) {
+    res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя.' });
+    return;
+  }
 
-  User.create(newUserData)
+  User.create({ name, about, avatar }, {
+    new: true,
+    runValidators: true,
+  })
     .then((newUser) => {
       res.status(201).send(newUser);
     })
