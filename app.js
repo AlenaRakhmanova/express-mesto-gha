@@ -1,6 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
+// const createError = require('http-errors');
 
+// // Создание ошибки
+// throw createError(status, message, properties)
 const routes = require('./routes/index');
 
 const { PORT = 3000 } = process.env;
@@ -18,6 +21,9 @@ app.use((req, res, next) => {
   };
   next();
 });
+// app.use((req, res, next) => {
+//   next(createError(404));
+// });
 app.use(routes);
 
 app.listen(PORT, () => {

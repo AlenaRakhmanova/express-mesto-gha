@@ -34,10 +34,7 @@ const createUser = (req, res) => {
     return;
   }
 
-  User.create({ name, about, avatar }, {
-    new: true,
-    runValidators: true,
-  })
+  User.create({ name, about, avatar })
     .then((newUser) => {
       res.status(201).send(newUser);
     })
