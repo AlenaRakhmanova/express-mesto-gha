@@ -26,6 +26,10 @@ app.use((req, res, next) => {
 // });
 app.use(routes);
 
+app.use((req, res) => {
+  res.status(404).send({ message: 'Sorry cant find that!' });
+});
+
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
 });
