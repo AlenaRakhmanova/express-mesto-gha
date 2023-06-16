@@ -4,8 +4,8 @@ const statusCode = require('../constants/constants');
 const getCards = (req, res) => {
   Card.find({}).then((cards) => {
     res.status(statusCode.success).send(cards);
-  }).catch((err) => {
-    res.status(statusCode.internalServerError).send(err.message);
+  }).catch(() => {
+    res.status(statusCode.internalServerError).send({ message: 'Произошла ошибка' });
   });
 };
 
@@ -25,7 +25,7 @@ const createCard = (req, res) => {
         res.status(statusCode.badRequest).send({ message: 'Переданы некорректные данные при создании карточки' });
         return;
       }
-      res.status(statusCode.internalServerError).send(err.message);
+      res.status(statusCode.internalServerError).send({ message: 'Произошла ошибка' });
     });
 };
 
@@ -44,7 +44,7 @@ const deleteCard = (req, res) => {
         res.status(statusCode.badRequest).send({ message: 'Карточка с указанным _id не найдена' });
         return;
       }
-      res.status(statusCode.internalServerError).send(err.message);
+      res.status(statusCode.internalServerError).send({ message: 'Произошла ошибка' });
     });
 };
 
@@ -66,7 +66,7 @@ const addLike = (req, res) => {
         res.status(statusCode.badRequest).send({ message: 'Передан несуществующий _id карточки' });
         return;
       }
-      res.status(statusCode.internalServerError).send(err.message);
+      res.status(statusCode.internalServerError).send({ message: 'Произошла ошибка' });
     });
 };
 
@@ -88,7 +88,7 @@ const deleteLike = (req, res) => {
         res.status(statusCode.badRequest).send({ message: 'Передан несуществующий _id карточки' });
         return;
       }
-      res.status(statusCode.internalServerError).send(err.message);
+      res.status(statusCode.internalServerError).send({ message: 'Произошла ошибка' });
     });
 };
 
