@@ -3,7 +3,7 @@ const statusCode = require('../constants/constants');
 
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
-  if (!authorization || !authorization.startsWith('Bearer')) {
+  if (!authorization || !authorization.startsWith('Bearer ')) {
     return res.status(statusCode.unauthorized).send({ message: 'Необходима авторизация' });
   }
   const token = authorization.replace('Bearer ', '');
@@ -16,5 +16,5 @@ module.exports = (req, res, next) => {
   }
 
   req.user = payload;
-  next();
+  return next();
 };

@@ -28,7 +28,7 @@ const getUsersById = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError('Пользователь по указанному _id не найден'));
+        next(new NotFoundError('Пользователь с указанным _id не найден'));
       }
       next(err);
     });
@@ -56,7 +56,13 @@ const createUser = (req, res, next) => {
       password: hash,
     }))
     .then((newUser) => {
-      res.status(statusCode.created).send(newUser);
+      res.status(statusCode.created).send({
+        name: newUser.name,
+        about: newUser.about,
+        avatar: newUser.avatar,
+        email: newUser.email,
+        _id: newUser._id,
+      });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
