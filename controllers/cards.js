@@ -14,9 +14,6 @@ const getCards = (req, res, next) => {
 
 const createCard = (req, res, next) => {
   const { name, link } = req.body;
-  if (!name || !link) {
-    next(new BadRequestError('Переданы некорректные данные при создании карточки.'));
-  }
 
   Card.create({ name, link, owner: req.user._id })
     .then((card) => {
@@ -25,8 +22,9 @@ const createCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные при создании карточки'));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -49,8 +47,9 @@ const deleteCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Карточка с указанным _id не найдена'));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -69,8 +68,9 @@ const addLike = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Передан несуществующий _id карточки'));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -89,8 +89,9 @@ const deleteLike = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Передан несуществующий _id карточки'));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 

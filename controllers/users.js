@@ -41,9 +41,6 @@ const createUser = (req, res, next) => {
     email,
     password,
   } = req.body;
-  // if (!email || !password) {
-  //   next(new BadRequestError('Переданы некорректные данные при создании пользователя.'));
-  // }
 
   bcrypt
     .hash(password, 10)
@@ -103,9 +100,6 @@ const updateUser = (req, res, next) => {
 
 const updateUserAvatar = (req, res, next) => {
   const { avatar } = req.body;
-  // if (!avatar) {
-  //   next(new BadRequestError('Переданы некорректные данные.'));
-  // }
 
   User.findByIdAndUpdate(
     req.user._id,
@@ -147,13 +141,8 @@ const getCurrentUser = (req, res, next) => {
   User.findOne({ _id: id }).then((user) => {
     if (!user) { throw new NotFoundError('Пользователь с указанным _id не найден'); }
     return res.status(statusCode.success).send(user);
-  }).catch((err) => {
-    if (err.name === 'CastError') {
-      next(new BadRequestError('Пользователь с указанным _id не найден.'));
-    } else {
-      next(err);
-    }
-  });
+  })
+    .catch(next);
 };
 
 module.exports = {
